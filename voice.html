@@ -183,12 +183,16 @@
   <span class="nav-link active">Voice</span>
 </nav>
 
-<button id="music-btn" title="Toggle Ambient Sound" aria-label="Toggle ambient music">
-  <svg viewBox="0 0 24 24" width="20" height="20">
-    <path d="M9 18V5l12-2v13M9 18c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-2c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z"
-      fill="none" stroke="#b07a47" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<button id="music-btn" title="Toggle Rain Sound" aria-label="Toggle rain sounds">
+  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#b07a47" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 16.2A4.5 4.5 0 0 0 17.5 8h-1.8A7 7 0 0 0 4 14.9"/>
+    <line x1="8" y1="19" x2="8" y2="21"/>
+    <line x1="12" y1="17" x2="12" y2="19"/>
+    <line x1="16" y1="19" x2="16" y2="21"/>
   </svg>
 </button>
+<div id="rain-hint">click for rain</div>
+<div id="rain-tooltip">Play rain</div>
 
 <script>
 const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
@@ -207,6 +211,10 @@ document.querySelectorAll('a,button').forEach(el=>{
   el.addEventListener('mouseleave',()=>{ring.style.width='34px';ring.style.height='34px';ring.style.borderColor='rgba(176,122,71,0.45)';});
 });
 
+const mb=document.getElementById('music-btn'),rt=document.getElementById('rain-tooltip');
+mb.addEventListener('mouseenter',()=>rt.classList.add('show'));
+mb.addEventListener('mouseleave',()=>rt.classList.remove('show'));
+
 /* ── LOADER + APPEAR ── */
 window.addEventListener('load',()=>{
   setTimeout(()=>{
@@ -219,39 +227,40 @@ window.addEventListener('load',()=>{
     document.querySelectorAll('.voice-card').forEach((el,i)=>{
       setTimeout(()=>el.classList.add('appear'),520+i*100);
     });
+    const rh=document.getElementById('rain-hint');
+    rh.classList.add('show');
+    setTimeout(()=>rh.classList.add('hide'),3500);
+    setTimeout(()=>rh.classList.remove('show'),4200);
   },1800);
 });
 
 /* ── AMBIENT AUDIO ── */
-let audioCtx=null,gainNode=null,isPlaying=false;
-function buildAmbience(){
-  audioCtx=new(window.AudioContext||window.webkitAudioContext)();
-  gainNode=audioCtx.createGain();
-  gainNode.gain.setValueAtTime(0.001,audioCtx.currentTime);
-  gainNode.connect(audioCtx.destination);
-  [110,138.6,164.8,220,277.2,329.6].forEach((f,i)=>{
-    const o=audioCtx.createOscillator(),g=audioCtx.createGain();
-    o.type='sine';o.frequency.value=f;g.gain.value=0.045/(i+1);
-    const lfo=audioCtx.createOscillator(),lg=audioCtx.createGain();
-    lfo.frequency.value=0.08+i*0.035;lg.gain.value=0.02;
-    lfo.connect(lg);lg.connect(g.gain);lfo.start();
-    o.connect(g);g.connect(gainNode);o.start();
-  });
-  const buf=audioCtx.createBuffer(1,audioCtx.sampleRate*4,audioCtx.sampleRate);
-  const d=buf.getChannelData(0);
-  for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1);
-  const s=audioCtx.createBufferSource();s.buffer=buf;s.loop=true;
-  const flt=audioCtx.createBiquadFilter();flt.type='lowpass';flt.frequency.value=180;
-  const ng=audioCtx.createGain();ng.gain.value=0.01;
-  s.connect(flt);flt.connect(ng);ng.connect(gainNode);s.start();
-}
+const sounds=['asset/sounds/rain-sounds.opus','asset/sounds/moonlight.opus'];
+let audio=null,isPlaying=false,fadeTimer=null;
 document.getElementById('music-btn').addEventListener('click',()=>{
-  if(!audioCtx)buildAmbience();
-  if(audioCtx.state==='suspended')audioCtx.resume();
+  if(!isPlaying){
+    const src=sounds[Math.floor(Math.random()*sounds.length)];
+    if(audio){audio.pause();audio=null;}
+    audio=new Audio(src);
+    audio.loop=true;
+    audio.volume=0;
+    audio.play();
+  }
   isPlaying=!isPlaying;
-  gainNode.gain.cancelScheduledValues(audioCtx.currentTime);
-  gainNode.gain.linearRampToValueAtTime(isPlaying?0.6:0.001,audioCtx.currentTime+2);
-  document.querySelector('#music-btn svg').style.opacity=isPlaying?'1':'0.4';
+  const target=isPlaying?0.6:0;
+  if(fadeTimer)clearInterval(fadeTimer);
+  fadeTimer=setInterval(()=>{
+    const d=target-audio.volume;
+    if(Math.abs(d)<0.015){
+      audio.volume=target;
+      clearInterval(fadeTimer);fadeTimer=null;
+      if(!isPlaying){audio.pause();audio.currentTime=0;}
+    }else{
+      audio.volume+=Math.sign(d)*0.025;
+    }
+  },40);
+  document.querySelector('#music-btn svg').style.opacity=isPlaying?'1':'0.35';
+  document.getElementById('rain-tooltip').textContent=isPlaying?'Pause rain':'Play rain';
 });
 </script>
 </body>
