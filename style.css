@@ -485,6 +485,75 @@
     outline-offset: 3px;
   }
 
+  /* ── LIGHTS OFF TOGGLE ── */
+  #lights-btn {
+    position: fixed; bottom: 26px; left: 86px; z-index: 200;
+    width: 48px; height: 48px; border-radius: 50%;
+    background: rgba(20,8,3,0.5); border: 1.5px solid var(--border-med);
+    backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.35s cubic-bezier(.23,1,.32,1);
+    opacity: 0; animation: fade-up 1s ease 2.8s forwards;
+    color: var(--text-secondary);
+  }
+  #lights-btn:hover {
+    border-color: rgba(214,165,108,0.7);
+    box-shadow: var(--shadow-md), 0 0 24px rgba(214,165,108,0.2);
+    transform: scale(1.12);
+    background: rgba(20,8,3,0.7);
+  }
+  #lights-btn.active {
+    background: rgba(214,165,108,0.15);
+    border-color: var(--gold);
+    box-shadow: var(--shadow-md), 0 0 32px rgba(214,165,108,0.3);
+    color: var(--gold);
+  }
+  #lights-btn.active:hover {
+    background: rgba(214,165,108,0.2);
+    box-shadow: var(--shadow-lg), 0 0 40px rgba(214,165,108,0.4);
+  }
+  #lights-btn:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 3px;
+  }
+
+  /* ── LIGHTS OFF OVERLAY ── */
+  .lights-off-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: rgba(10,4,1,0.98);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --light-x: 50%;
+    --light-y: 50%;
+    --light-radius: 180px;
+  }
+  .lights-off-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+    mask-image: radial-gradient(circle var(--light-radius) at var(--light-x) var(--light-y),
+      transparent 0%,
+      rgba(0,0,0,0.3) 65%,
+      rgba(0,0,0,0.8) 85%,
+      black 100%);
+    -webkit-mask-image: radial-gradient(circle var(--light-radius) at var(--light-x) var(--light-y),
+      transparent 0%,
+      rgba(0,0,0,0.3) 65%,
+      rgba(0,0,0,0.8) 85%,
+      black 100%);
+  }
+  .lights-off-overlay.active::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle var(--light-radius) at var(--light-x) var(--light-y),
+      rgba(214,165,108,0.15) 0%,
+      rgba(214,165,108,0.08) 40%,
+      transparent 100%);
+    pointer-events: none;
+  }
+
   /* ── MUSIC TOGGLE ── */
   #music-btn {
     position:fixed; bottom:26px; right:26px; z-index:200;

@@ -66,6 +66,9 @@
 <!-- Page transition flash -->
 <div id="page-transition"></div>
 
+<!-- Lights Off Overlay -->
+<div id="lights-off-overlay" class="lights-off-overlay"></div>
+
 <!-- Main -->
 <div id="main">
 
@@ -311,6 +314,14 @@
   </svg>
 </button>
 
+<button id="lights-btn" title="Lights Off - Flashlight Mode" aria-label="Toggle cinematic flashlight effect">
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M15 7v6a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3z"/>
+    <circle cx="12" cy="12" r="1" fill="currentColor"/>
+    <path d="M3 12h18"/>
+  </svg>
+</button>
+
 <button id="music-btn" title="Toggle Rain Sound" aria-label="Toggle rain sounds">
   <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#b07a47" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     <path d="M20 16.2A4.5 4.5 0 0 0 17.5 8h-1.8A7 7 0 0 0 4 14.9"/>
@@ -522,6 +533,44 @@ function updateThemeIcon(){
 
 themeBtn.addEventListener('click',()=>applyTheme(!isDarkMode));
 applyTheme(isDarkMode);
+
+/* ── LIGHTS OFF ── */
+const lightsBtn=document.getElementById('lights-btn');
+const lightsOverlay=document.getElementById('lights-off-overlay');
+let lightsOff=false;
+let lightX=50,lightY=50;
+
+function updateLightPosition(x,y){
+  lightX=x;
+  lightY=y;
+}
+
+function renderLights(){
+  if(lightsOff){
+    lightsOverlay.style.setProperty('--light-x',lightX+'px');
+    lightsOverlay.style.setProperty('--light-y',lightY+'px');
+  }
+  if(lightsOff) requestAnimationFrame(renderLights);
+}
+
+lightsBtn.addEventListener('click',()=>{
+  lightsOff=!lightsOff;
+  lightsBtn.classList.toggle('active');
+  lightsOverlay.classList.toggle('active');
+  if(lightsOff){
+    renderLights();
+  }
+});
+
+document.addEventListener('mousemove',(e)=>{
+  updateLightPosition(e.clientX,e.clientY);
+});
+
+// Touch support for mobile
+document.addEventListener('touchmove',(e)=>{
+  const touch=e.touches[0];
+  updateLightPosition(touch.clientX,touch.clientY);
+},{passive:true});
 
 /* ── AMBIENT AUDIO ── */
 const sounds=['asset/sounds/rain-sounds.opus','asset/sounds/moonlight.opus'];
