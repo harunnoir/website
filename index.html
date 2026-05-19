@@ -292,35 +292,53 @@
   <footer id="page-footer">MMXXVI &nbsp;·&nbsp; HARUN Noir &nbsp;·&nbsp; All Rights Reserved</footer>
 </div>
 
-<nav id="page-nav" aria-label="Main navigation">
-  <button class="nav-link active" data-page="sanctuary" aria-current="page">Sanctuary</button>
-  <span class="nav-sep" aria-hidden="true"></span>
-  <button class="nav-link" data-page="42" aria-label="42 School section">42</button>
-  <span class="nav-sep" aria-hidden="true"></span>
-  <button class="nav-link" data-page="voice" aria-label="Voice Acting section">Voice</button>
-</nav>
+<!-- Travel Portal -->
+<div id="travel-portal" aria-label="Navigation portal">
+  <button id="travel-trigger" aria-expanded="false" aria-controls="travel-destinations">
+    <span class="travel-text">Travel</span>
+    <span class="travel-glyph">&#10022;</span>
+  </button>
+  <nav id="travel-destinations" class="travel-destinations" aria-label="Page navigation">
+    <button class="travel-dest" data-page="sanctuary">
+      <span class="dest-ember"></span>
+      <span class="dest-name">Sanctuary</span>
+    </button>
+    <button class="travel-dest" data-page="42">
+      <span class="dest-ember"></span>
+      <span class="dest-name">42</span>
+    </button>
+    <button class="travel-dest" data-page="voice">
+      <span class="dest-ember"></span>
+      <span class="dest-name">Voice</span>
+    </button>
+  </nav>
+</div>
 
-<button id="lights-btn" title="Lights Off - Flashlight Mode" aria-label="Toggle cinematic flashlight effect">
-  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <path d="M15 7v6a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3z"/>
-    <circle cx="12" cy="12" r="1" fill="currentColor"/>
-    <path d="M3 12h18"/>
-  </svg>
-</button>
-
-<div id="audio-controls">
-  <button id="music-btn" title="Toggle Rain Sound" aria-label="Toggle rain sounds">
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#b07a47" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M20 16.2A4.5 4.5 0 0 0 17.5 8h-1.8A7 7 0 0 0 4 14.9"/>
-      <line x1="8" y1="19" x2="8" y2="21"/>
-      <line x1="12" y1="17" x2="12" y2="19"/>
-      <line x1="16" y1="19" x2="16" y2="21"/>
+<!-- Ambient Glyphs (minimalist controls) -->
+<div id="ambient-glyphs">
+  <button id="glyph-rain" title="Rain sounds" aria-label="Toggle rain sounds">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.2">
+      <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
     </svg>
   </button>
-  <input type="range" id="volume-slider" min="0" max="100" value="60" aria-label="Volume control for rain sounds" class="volume-slider">
+  <button id="glyph-lights" title="Flashlight mode" aria-label="Toggle flashlight mode">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.2">
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+      <circle cx="12" cy="12" r="4"/>
+    </svg>
+  </button>
 </div>
-<div id="rain-hint">click for rain</div>
-<div id="rain-tooltip">Play rain</div>
+
+<!-- Volume slider (hidden, shown when rain active) -->
+<div id="volume-wrap" class="volume-wrap">
+  <input type="range" id="volume-slider" min="0" max="100" value="60" aria-label="Volume control" class="volume-slider">
+</div>
+
+<!-- Discovery Whisper -->
+<div id="discovery-whisper" class="discovery-whisper" aria-live="polite">
+  <span class="whisper-text"></span>
+  <button class="whisper-link"></button>
+</div>
 
 <script>
 /* ── CURSOR ── */
@@ -336,7 +354,7 @@ document.addEventListener('mousemove',e=>{
   requestAnimationFrame(loop);
 })();
 function updateCursorListeners(){
-  document.querySelectorAll('a,button,[data-page],.nav-link,.skill-tag').forEach(el=>{
+  document.querySelectorAll('a,button,[data-page],.travel-dest,.skill-tag,#travel-trigger,#glyph-rain,#glyph-lights,.whisper-link').forEach(el=>{
     el.removeEventListener('mouseenter',onEnter);
     el.removeEventListener('mouseleave',onLeave);
     el.addEventListener('mouseenter',onEnter);
@@ -353,10 +371,6 @@ function onLeave(){
   ring.style.height='34px';
   ring.style.borderColor='rgba(176,122,71,0.45)';
 }
-
-const mb=document.getElementById('music-btn'),rt=document.getElementById('rain-tooltip');
-mb.addEventListener('mouseenter',()=>rt.classList.add('show'));
-mb.addEventListener('mouseleave',()=>rt.classList.remove('show'));
 
 /* ── PAGE DATA ── */
 const pages = {
@@ -438,9 +452,7 @@ function switchPage(pageKey) {
     document.getElementById(data.section).classList.add('active');
 
     /* Update nav */
-    document.querySelectorAll('.nav-link[data-page]').forEach(l=>{
-      l.classList.toggle('active', l.dataset.page === pageKey);
-    });
+    updateTravelActive(pageKey);
 
     /* Scroll to top */
     document.getElementById('main').scrollTop = 0;
@@ -459,12 +471,47 @@ function switchPage(pageKey) {
 }
 
 /* Nav click/keyboard handlers */
-document.querySelectorAll('.nav-link[data-page]').forEach(link=>{
-  link.addEventListener('click',()=>switchPage(link.dataset.page));
+const travelTrigger = document.getElementById('travel-trigger');
+const travelDests = document.getElementById('travel-destinations');
+const travelPortal = document.getElementById('travel-portal');
+
+// Travel portal hover/focus handling
+travelPortal.addEventListener('mouseenter', () => {
+  travelPortal.classList.add('open');
+  travelTrigger.setAttribute('aria-expanded', 'true');
+});
+travelPortal.addEventListener('mouseleave', () => {
+  travelPortal.classList.remove('open');
+  travelTrigger.setAttribute('aria-expanded', 'false');
+});
+travelTrigger.addEventListener('focus', () => {
+  travelPortal.classList.add('open');
+  travelTrigger.setAttribute('aria-expanded', 'true');
+});
+travelPortal.addEventListener('focusout', (e) => {
+  if (!travelPortal.contains(e.relatedTarget)) {
+    travelPortal.classList.remove('open');
+    travelTrigger.setAttribute('aria-expanded', 'false');
+  }
+});
+
+// Update active state in travel portal
+function updateTravelActive(pageKey) {
+  document.querySelectorAll('.travel-dest').forEach(d => {
+    d.classList.toggle('active', d.dataset.page === pageKey);
+  });
+}
+
+document.querySelectorAll('.travel-dest[data-page]').forEach(link=>{
+  link.addEventListener('click',()=>{
+    switchPage(link.dataset.page);
+    travelPortal.classList.remove('open');
+  });
   link.addEventListener('keydown',(e)=>{
     if(e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       switchPage(link.dataset.page);
+      travelPortal.classList.remove('open');
     }
   });
 });
@@ -489,15 +536,12 @@ window.addEventListener('load',()=>{
     main.classList.add('visible');
     pages.sanctuary.animateItems();
     updateCursorListeners();
-    const rh=document.getElementById('rain-hint');
-    rh.classList.add('show');
-    setTimeout(()=>rh.classList.add('hide'),3500);
-    setTimeout(()=>rh.classList.remove('show'),4200);
+    updateTravelActive('sanctuary');
   },1800);
 });
 
 /* ── LIGHTS OFF ── */
-const lightsBtn=document.getElementById('lights-btn');
+const lightsBtn=document.getElementById('glyph-lights');
 const lightsOverlay=document.getElementById('lights-off-overlay');
 let lightsOff=false;
 let lightX=50,lightY=50;
@@ -537,6 +581,8 @@ document.addEventListener('touchmove',(e)=>{
 /* ── AMBIENT AUDIO ── */
 const sounds=['asset/sounds/rain-sounds.opus','asset/sounds/moonlight.opus'];
 let audio=null,isPlaying=false,fadeTimer=null,currentVolume=0.6,audioCtx=null,oscNode=null;
+const rainBtn=document.getElementById('glyph-rain');
+const volumeWrap=document.getElementById('volume-wrap');
 
 function fadeTo(targetVol){
   if(!audio)return;
@@ -555,8 +601,8 @@ function fadeTo(targetVol){
 }
 
 function updateAudioUI(){
-  document.querySelector('#music-btn svg').style.opacity=isPlaying?'1':'0.35';
-  document.getElementById('rain-tooltip').textContent=isPlaying?'Pause rain':'Play rain';
+  rainBtn.classList.toggle('active', isPlaying);
+  volumeWrap.classList.toggle('show', isPlaying);
   const volSlider=document.getElementById('volume-slider');
   if(volSlider&&audio) volSlider.value=Math.round(audio.volume*100);
 }
@@ -600,7 +646,7 @@ function initAudio(){
   });
 }
 
-document.getElementById('music-btn').addEventListener('click',()=>{
+rainBtn.addEventListener('click',()=>{
   if(!isPlaying){
     if(!audio) initAudio();
     if(audio&&audio.paused) audio.play().catch(()=>createFallbackAudio());
@@ -624,6 +670,86 @@ if(volSlider){
     updateAudioUI();
   });
 }
+
+/* ── DISCOVERY WHISPER SYSTEM ── */
+const whisperMessages = {
+  sanctuary: 'Return to the sanctuary',
+  '42': 'A journey through 42 awaits',
+  voice: 'A voice echoes in the shadows'
+};
+
+let visitedSections = JSON.parse(sessionStorage.getItem('visitedSections') || '["sanctuary"]');
+let shownWhispers = JSON.parse(sessionStorage.getItem('shownWhispers') || '[]');
+let whisperTimeout = null;
+let scrollTimeout = null;
+let isScrolling = false;
+
+function markVisited(pageKey) {
+  if (!visitedSections.includes(pageKey)) {
+    visitedSections.push(pageKey);
+    sessionStorage.setItem('visitedSections', JSON.stringify(visitedSections));
+  }
+}
+
+function getUnvisitedSection() {
+  const allSections = ['sanctuary', '42', 'voice'];
+  return allSections.find(s => !visitedSections.includes(s) && !shownWhispers.includes(s));
+}
+
+function showWhisper(targetSection) {
+  if (!targetSection || shownWhispers.includes(targetSection)) return;
+  
+  const whisper = document.getElementById('discovery-whisper');
+  const text = whisper.querySelector('.whisper-text');
+  const link = whisper.querySelector('.whisper-link');
+  
+  text.textContent = whisperMessages[targetSection] + ' — ';
+  link.textContent = targetSection === '42' ? '42' : targetSection.charAt(0).toUpperCase() + targetSection.slice(1);
+  link.onclick = () => {
+    switchPage(targetSection);
+    hideWhisper();
+  };
+  
+  whisper.classList.add('show');
+  shownWhispers.push(targetSection);
+  sessionStorage.setItem('shownWhispers', JSON.stringify(shownWhispers));
+  
+  setTimeout(hideWhisper, 6000);
+}
+
+function hideWhisper() {
+  document.getElementById('discovery-whisper').classList.remove('show');
+}
+
+function scheduleWhisper() {
+  if (whisperTimeout) clearTimeout(whisperTimeout);
+  whisperTimeout = setTimeout(() => {
+    if (!isScrolling) {
+      const unvisited = getUnvisitedSection();
+      if (unvisited) showWhisper(unvisited);
+    }
+  }, 25000);
+}
+
+// Track scrolling to avoid showing whisper during active reading
+window.addEventListener('scroll', () => {
+  isScrolling = true;
+  if (scrollTimeout) clearTimeout(scrollTimeout);
+  scrollTimeout = setTimeout(() => {
+    isScrolling = false;
+  }, 1500);
+}, { passive: true });
+
+// Mark current page as visited when switching
+const originalSwitchPage = switchPage;
+switchPage = function(pageKey) {
+  markVisited(pageKey);
+  scheduleWhisper();
+  originalSwitchPage(pageKey);
+};
+
+// Initialize whisper system on load
+scheduleWhisper();
 </script>
 </body>
 </html>
