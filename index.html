@@ -12,9 +12,23 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,500&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,500&family=Inter:wght@300;400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="style.css">
+<style>
+  /* Page transition overlay */
+  #page-transition {
+    position: fixed; inset: 0; z-index: 9990;
+    background: var(--void);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+  #page-transition.active { opacity: 1; pointer-events: all; }
+
+  /* Content sections */
+  .page-section { display: none; width: 100%; }
+  .page-section.active { display: contents; }
+</style>
 </head>
 <body>
 
@@ -32,10 +46,13 @@
 
 <!-- Loader -->
 <div id="loader">
-  <div class="loader-glyph">H</div>
+  <div class="loader-glyph" id="loader-glyph">H</div>
   <div class="loader-line"></div>
-  <div class="loader-sub">entering the sanctuary</div>
+  <div class="loader-sub" id="loader-sub">entering the sanctuary</div>
 </div>
+
+<!-- Page transition flash -->
+<div id="page-transition"></div>
 
 <!-- Main -->
 <div id="main">
@@ -54,76 +71,200 @@
   <h1 class="creator-name">
     <span class="name-harun">HARUN</span><span class="name-noir"> Noir</span>
   </h1>
-  <p class="creator-handle">@harunnoir</p>
+  <p class="creator-handle" id="page-handle">@harunnoir</p>
   <div class="divider"></div>
-  <p class="creator-bio">Where silence becomes form,<br>and form becomes eternal.</p>
+  <p class="creator-bio" id="page-bio">Where silence becomes form,<br>and form becomes eternal.</p>
 
-  <div class="links-wrap" id="links">
+  <!-- ══ SANCTUARY content ══ -->
+  <div class="page-section active" id="section-sanctuary">
+    <div class="links-wrap" id="links">
 
-    <a class="link-btn" href="https://youtube.com/@harunnoir" target="_blank" rel="noopener">
-      <div class="btn-icon-wrap">
-        <svg class="btn-icon" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      <a class="link-btn" href="https://youtube.com/@harunnoir" target="_blank" rel="noopener">
+        <div class="btn-icon-wrap">
+          <svg class="btn-icon" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </div>
+        <span class="btn-label">YouTube</span>
+        <span class="btn-arrow">→</span>
+      </a>
+
+      <a class="link-btn" href="https://github.com/harunnoir" target="_blank" rel="noopener">
+        <div class="btn-icon-wrap">
+          <svg class="btn-icon" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        </div>
+        <span class="btn-label">GitHub</span>
+        <span class="btn-arrow">→</span>
+      </a>
+
+      <a class="link-btn" href="https://instagram.com/harunnoir" target="_blank" rel="noopener">
+        <div class="btn-icon-wrap">
+          <svg class="btn-icon" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+        <span class="btn-label">Instagram</span>
+        <span class="btn-arrow">→</span>
+      </a>
+
+      <a class="link-btn" href="https://x.com/harunnoir" target="_blank" rel="noopener">
+        <div class="btn-icon-wrap">
+          <svg class="btn-icon" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </div>
+        <span class="btn-label">X / Twitter</span>
+        <span class="btn-arrow">→</span>
+      </a>
+
+      <a class="link-btn" href="https://mastodon.social/@harunnoir" target="_blank" rel="noopener">
+        <div class="btn-icon-wrap">
+          <svg class="btn-icon" viewBox="0 0 24 24"><path d="M21.327 8.566c0-4.339-2.843-5.61-2.843-5.61-1.433-.658-3.894-.956-6.484-.956s-5.051.298-6.484.956c0 0-2.843 1.271-2.843 5.61 0 .993-.019 2.181.012 3.441.103 4.243.778 8.425 4.701 9.463 1.809.479 3.362.579 4.612.51 2.268-.126 3.541-.809 3.541-.809l-.075-1.646s-1.621.511-3.441.449c-1.804-.062-3.707-.195-3.999-2.409a4.523 4.523 0 01-.04-.621c3.202.748 6.48.421 8.733.022 1.824-.322 3.7-1.11 3.99-3.29.247-1.818.187-4.001.187-4.001z"/></svg>
+        </div>
+        <span class="btn-label">Mastodon</span>
+        <span class="btn-arrow">→</span>
+      </a>
+
+      <a class="link-btn" href="https://bsky.app/profile/harunnoir.bsky.social" target="_blank" rel="noopener">
+        <div class="btn-icon-wrap">
+          <svg class="btn-icon" viewBox="0 0 24 24"><path d="M12 13.066c-1.872-2.999-5.67-7.07-9.645-9.236C.568 2.701.79.984 2.138.472 5.85-1.02 12 4.197 12 4.197s0 0 0 0 6.15-5.217 9.862-3.725c1.348.512 1.57 2.229.217 3.358-3.975 2.166-7.773 6.237-9.645 9.236-.43.689-.43 1.245 0 1.934 1.872 2.999 5.67 7.07 9.645 9.236 1.353.921 1.131 2.638-.217 3.15-3.71 1.492-9.862-3.73-9.862-3.73s0 0 0 0-6.15 5.222-9.862 3.73c-1.348-.512-1.57-2.229-.217-3.15 3.975-2.166 7.773-6.237 9.645-9.236.43-.689.43-1.245 0-1.934z"/></svg>
+        </div>
+        <span class="btn-label">Bluesky</span>
+        <span class="btn-arrow">→</span>
+      </a>
+
+      <a class="link-btn" href="https://discord.gg/harunnoir" target="_blank" rel="noopener">
+        <div class="btn-icon-wrap">
+          <svg class="btn-icon" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.079.11 18.1.128 18.116a19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+        </div>
+        <span class="btn-label">Discord</span>
+        <span class="btn-arrow">→</span>
+      </a>
+
+      <a class="link-btn" href="mailto:hello@harunnoir.com">
+        <div class="btn-icon-wrap">
+          <svg class="btn-icon" viewBox="0 0 24 24"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 010 19.366V5.457c0-.904.732-1.636 1.636-1.636h.749L12 11.148l9.615-7.327h.749c.904 0 1.636.732 1.636 1.636z"/></svg>
+        </div>
+        <span class="btn-label">Email</span>
+        <span class="btn-arrow">→</span>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ══ 42 content ══ -->
+  <div class="page-section" id="section-42">
+    <div class="skills-wrap" id="skills-42">
+      <span class="skill-tag">C</span>
+      <span class="skill-tag">Python</span>
+      <span class="skill-tag">Shell</span>
+      <span class="skill-tag">Unix</span>
+      <span class="skill-tag">System Admin</span>
+      <span class="skill-tag">Algorithms</span>
+      <span class="skill-tag">Git</span>
+    </div>
+  </div>
+
+  <!-- ══ VOICE content ══ -->
+  <div class="page-section" id="section-voice">
+    <div class="skills-wrap" id="skills-voice">
+      <span class="skill-tag">Narration</span>
+      <span class="skill-tag">Character Acting</span>
+      <span class="skill-tag">Commercial</span>
+      <span class="skill-tag">Audio Editing</span>
+      <span class="skill-tag">Script Writing</span>
+      <span class="skill-tag">Dubbing</span>
+    </div>
+
+    <div class="voice-section">
+      <h2 class="voice-section-title">Demo Reels</h2>
+      <div class="voice-cards" id="voiceCards">
+        <div class="voice-card">
+          <div class="voice-card-icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="2" width="6" height="11" rx="3" ry="3"/>
+              <path d="M5 10a7 7 0 0 0 14 0"/>
+              <line x1="12" y1="19" x2="12" y2="22"/>
+            </svg>
+          </div>
+          <div class="voice-card-body">
+            <div class="voice-card-name">Commercial Reel</div>
+            <div class="voice-card-desc">Warm, confident, and persuasive — brand narration and commercial spots.</div>
+          </div>
+          <span class="voice-card-badge">Coming Soon</span>
+        </div>
+        <div class="voice-card">
+          <div class="voice-card-icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+              <line x1="8" y1="7" x2="16" y2="7"/>
+              <line x1="8" y1="11" x2="14" y2="11"/>
+            </svg>
+          </div>
+          <div class="voice-card-body">
+            <div class="voice-card-name">Narration Reel</div>
+            <div class="voice-card-desc">Deep, resonant storytelling for audiobooks, documentaries, and explainers.</div>
+          </div>
+          <span class="voice-card-badge">Coming Soon</span>
+        </div>
+        <div class="voice-card">
+          <div class="voice-card-icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+              <circle cx="8.5" cy="9.5" r="1.5"/>
+              <circle cx="15.5" cy="9.5" r="1.5"/>
+              <path d="M7.5 14.5c1.5 2 4.5 2 6 0"/>
+            </svg>
+          </div>
+          <div class="voice-card-body">
+            <div class="voice-card-name">Character Reel</div>
+            <div class="voice-card-desc">Versatile character work — from gritty anti-heroes to whimsical sidekicks.</div>
+          </div>
+          <span class="voice-card-badge">Coming Soon</span>
+        </div>
       </div>
-      <span class="btn-label">YouTube</span>
-      <span class="btn-arrow">→</span>
-    </a>
+    </div>
 
-    <a class="link-btn" href="https://github.com/harunnoir" target="_blank" rel="noopener">
-      <div class="btn-icon-wrap">
-        <svg class="btn-icon" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+    <div class="voice-section">
+      <h2 class="voice-section-title">Voice Profile</h2>
+      <div class="voice-cards" id="styleCards">
+        <div class="voice-card">
+          <div class="voice-card-icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <circle cx="12" cy="12" r="6"/>
+              <circle cx="12" cy="12" r="2"/>
+            </svg>
+          </div>
+          <div class="voice-card-body">
+            <div class="voice-card-name">Type</div>
+            <div class="voice-card-desc">Baritone · Warm · Authoritative · Smooth</div>
+          </div>
+          <span class="voice-card-badge">Range</span>
+        </div>
+        <div class="voice-card">
+          <div class="voice-card-icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="2" y1="12" x2="22" y2="12"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+          </div>
+          <div class="voice-card-body">
+            <div class="voice-card-name">Languages</div>
+            <div class="voice-card-desc">English (Fluent) · French (Limited Working) · Arabic (Native) · Tamazight (Native)</div>
+          </div>
+          <span class="voice-card-badge">Multilingual</span>
+        </div>
+        <div class="voice-card">
+          <div class="voice-card-icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+          </div>
+          <div class="voice-card-body">
+            <div class="voice-card-name">Equipment</div>
+            <div class="voice-card-desc">Professional home studio with broadcast-grade processing.</div>
+          </div>
+          <span class="voice-card-badge">Home Studio</span>
+        </div>
       </div>
-      <span class="btn-label">GitHub</span>
-      <span class="btn-arrow">→</span>
-    </a>
-
-    <a class="link-btn" href="https://instagram.com/harunnoir" target="_blank" rel="noopener">
-      <div class="btn-icon-wrap">
-        <svg class="btn-icon" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-      </div>
-      <span class="btn-label">Instagram</span>
-      <span class="btn-arrow">→</span>
-    </a>
-
-    <a class="link-btn" href="https://x.com/harunnoir" target="_blank" rel="noopener">
-      <div class="btn-icon-wrap">
-        <svg class="btn-icon" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-      </div>
-      <span class="btn-label">X / Twitter</span>
-      <span class="btn-arrow">→</span>
-    </a>
-
-    <a class="link-btn" href="https://mastodon.social/@harunnoir" target="_blank" rel="noopener">
-      <div class="btn-icon-wrap">
-        <svg class="btn-icon" viewBox="0 0 24 24"><path d="M21.327 8.566c0-4.339-2.843-5.61-2.843-5.61-1.433-.658-3.894-.956-6.484-.956s-5.051.298-6.484.956c0 0-2.843 1.271-2.843 5.61 0 .993-.019 2.181.012 3.441.103 4.243.778 8.425 4.701 9.463 1.809.479 3.362.579 4.612.51 2.268-.126 3.541-.809 3.541-.809l-.075-1.646s-1.621.511-3.441.449c-1.804-.062-3.707-.195-3.999-2.409a4.523 4.523 0 01-.04-.621c3.202.748 6.48.421 8.733.022 1.824-.322 3.7-1.11 3.99-3.29.247-1.818.187-4.001.187-4.001z"/></svg>
-      </div>
-      <span class="btn-label">Mastodon</span>
-      <span class="btn-arrow">→</span>
-    </a>
-
-    <a class="link-btn" href="https://bsky.app/profile/harunnoir.bsky.social" target="_blank" rel="noopener">
-      <div class="btn-icon-wrap">
-        <svg class="btn-icon" viewBox="0 0 24 24"><path d="M12 13.066c-1.872-2.999-5.67-7.07-9.645-9.236C.568 2.701.79.984 2.138.472 5.85-1.02 12 4.197 12 4.197s0 0 0 0 6.15-5.217 9.862-3.725c1.348.512 1.57 2.229.217 3.358-3.975 2.166-7.773 6.237-9.645 9.236-.43.689-.43 1.245 0 1.934 1.872 2.999 5.67 7.07 9.645 9.236 1.353.921 1.131 2.638-.217 3.15-3.71 1.492-9.862-3.73-9.862-3.73s0 0 0 0-6.15 5.222-9.862 3.73c-1.348-.512-1.57-2.229-.217-3.15 3.975-2.166 7.773-6.237 9.645-9.236.43-.689.43-1.245 0-1.934z"/></svg>
-      </div>
-      <span class="btn-label">Bluesky</span>
-      <span class="btn-arrow">→</span>
-    </a>
-
-    <a class="link-btn" href="https://discord.gg/harunnoir" target="_blank" rel="noopener">
-      <div class="btn-icon-wrap">
-        <svg class="btn-icon" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.079.11 18.1.128 18.116a19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
-      </div>
-      <span class="btn-label">Discord</span>
-      <span class="btn-arrow">→</span>
-    </a>
-
-    <a class="link-btn" href="mailto:hello@harunnoir.com" target="_blank" rel="noopener">
-      <div class="btn-icon-wrap">
-        <svg class="btn-icon" viewBox="0 0 24 24"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 010 19.366V5.457c0-.904.732-1.636 1.636-1.636h.749L12 11.148l9.615-7.327h.749c.904 0 1.636.732 1.636 1.636z"/></svg>
-      </div>
-      <span class="btn-label">Email</span>
-      <span class="btn-arrow">→</span>
-    </a>
-
+    </div>
   </div>
 
   <div class="ornament">
@@ -132,15 +273,15 @@
     <div class="ornament-line rev"></div>
   </div>
 
-  <footer>MMXXVI &nbsp;·&nbsp; HARUN Noir &nbsp;·&nbsp; All Rights Reserved</footer>
+  <footer id="page-footer">MMXXVI &nbsp;·&nbsp; HARUN Noir &nbsp;·&nbsp; All Rights Reserved</footer>
 </div>
 
 <nav id="page-nav">
-  <span class="nav-link active">Sanctuary</span>
+  <span class="nav-link active" data-page="sanctuary">Sanctuary</span>
   <span class="nav-sep"></span>
-  <a class="nav-link" href="42.html">42</a>
+  <span class="nav-link" data-page="42">42</span>
   <span class="nav-sep"></span>
-  <a class="nav-link" href="voice.html">Voice</a>
+  <span class="nav-link" data-page="voice">Voice</span>
 </nav>
 
 <button id="music-btn" title="Toggle Rain Sound" aria-label="Toggle rain sounds">
@@ -167,14 +308,125 @@ document.addEventListener('mousemove',e=>{
   ring.style.left=rx+'px';ring.style.top=ry+'px';
   requestAnimationFrame(loop);
 })();
-document.querySelectorAll('a,button').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{ring.style.width='54px';ring.style.height='54px';ring.style.borderColor='rgba(214,165,108,0.7)';});
-  el.addEventListener('mouseleave',()=>{ring.style.width='34px';ring.style.height='34px';ring.style.borderColor='rgba(176,122,71,0.45)';});
-});
+function updateCursorListeners(){
+  document.querySelectorAll('a,button,[data-page]').forEach(el=>{
+    el.removeEventListener('mouseenter',onEnter);
+    el.removeEventListener('mouseleave',onLeave);
+    el.addEventListener('mouseenter',onEnter);
+    el.addEventListener('mouseleave',onLeave);
+  });
+}
+function onEnter(){ring.style.width='54px';ring.style.height='54px';ring.style.borderColor='rgba(214,165,108,0.7)';}
+function onLeave(){ring.style.width='34px';ring.style.height='34px';ring.style.borderColor='rgba(176,122,71,0.45)';}
 
 const mb=document.getElementById('music-btn'),rt=document.getElementById('rain-tooltip');
 mb.addEventListener('mouseenter',()=>rt.classList.add('show'));
 mb.addEventListener('mouseleave',()=>rt.classList.remove('show'));
+
+/* ── PAGE DATA ── */
+const pages = {
+  sanctuary: {
+    glyph: 'H',
+    sub: 'entering the sanctuary',
+    handle: '@harunnoir',
+    bio: 'Where silence becomes form,<br>and form becomes eternal.',
+    footer: 'MMXXVI &nbsp;·&nbsp; HARUN Noir &nbsp;·&nbsp; All Rights Reserved',
+    title: 'HARUN Noir — Digital Sanctuary',
+    section: 'section-sanctuary',
+    animateItems: () => {
+      document.querySelectorAll('.link-btn').forEach((btn,i)=>{
+        btn.classList.remove('appear');
+        void btn.offsetWidth;
+        setTimeout(()=>btn.classList.add('appear'),100+i*95);
+      });
+    }
+  },
+  '42': {
+    glyph: '42',
+    sub: 'loading the journey',
+    handle: '@harunnoir · 42',
+    bio: 'Navigating the 42 common core —<br>one project at a time. Building with C, Python,<br>and relentless curiosity.',
+    footer: 'MMXXVI &nbsp;·&nbsp; HARUN Noir &nbsp;·&nbsp; 42',
+    title: 'HARUN Noir — 42',
+    section: 'section-42',
+    animateItems: () => {
+      document.querySelectorAll('#skills-42 .skill-tag').forEach((el,i)=>{
+        el.classList.remove('appear');
+        void el.offsetWidth;
+        setTimeout(()=>el.classList.add('appear'),100+i*70);
+      });
+    }
+  },
+  voice: {
+    glyph: 'V',
+    sub: 'finding the frequency',
+    handle: '@harunnoir · Voice',
+    bio: 'Breathing life into words —<br>from whispers to thunder. Voice acting,<br>narration, and sonic storytelling.',
+    footer: 'MMXXVI &nbsp;·&nbsp; HARUN Noir &nbsp;·&nbsp; Voice',
+    title: 'HARUN Noir — Voice',
+    section: 'section-voice',
+    animateItems: () => {
+      document.querySelectorAll('#skills-voice .skill-tag').forEach((el,i)=>{
+        el.classList.remove('appear');
+        void el.offsetWidth;
+        setTimeout(()=>el.classList.add('appear'),100+i*70);
+      });
+      document.querySelectorAll('.voice-card').forEach((el,i)=>{
+        el.classList.remove('appear');
+        void el.offsetWidth;
+        setTimeout(()=>el.classList.add('appear'),200+i*100);
+      });
+    }
+  }
+};
+
+let currentPage = 'sanctuary';
+const transition = document.getElementById('page-transition');
+
+function switchPage(pageKey) {
+  if(pageKey === currentPage) return;
+  const data = pages[pageKey];
+  if(!data) return;
+
+  /* Fade out */
+  transition.classList.add('active');
+
+  setTimeout(()=>{
+    /* Swap content */
+    document.getElementById('page-handle').innerHTML = data.handle;
+    document.getElementById('page-bio').innerHTML = data.bio;
+    document.getElementById('page-footer').innerHTML = data.footer;
+    document.title = data.title;
+
+    /* Hide all sections, show target */
+    document.querySelectorAll('.page-section').forEach(s=>s.classList.remove('active'));
+    document.getElementById(data.section).classList.add('active');
+
+    /* Update nav */
+    document.querySelectorAll('.nav-link[data-page]').forEach(l=>{
+      l.classList.toggle('active', l.dataset.page === pageKey);
+    });
+
+    /* Scroll to top */
+    document.getElementById('main').scrollTop = 0;
+    window.scrollTo(0,0);
+
+    currentPage = pageKey;
+    updateCursorListeners();
+
+    /* Fade back in */
+    transition.classList.remove('active');
+
+    /* Animate items */
+    data.animateItems();
+
+  }, 350);
+}
+
+/* Nav click handlers */
+document.querySelectorAll('.nav-link[data-page]').forEach(link=>{
+  link.addEventListener('click',()=>switchPage(link.dataset.page));
+});
 
 /* ── LOADER ── */
 window.addEventListener('load',()=>{
@@ -182,9 +434,8 @@ window.addEventListener('load',()=>{
     document.getElementById('loader').classList.add('hide');
     const main=document.getElementById('main');
     main.classList.add('visible');
-    document.querySelectorAll('.link-btn').forEach((btn,i)=>{
-      setTimeout(()=>btn.classList.add('appear'),320+i*95);
-    });
+    pages.sanctuary.animateItems();
+    updateCursorListeners();
     const rh=document.getElementById('rain-hint');
     rh.classList.add('show');
     setTimeout(()=>rh.classList.add('hide'),3500);
@@ -195,6 +446,28 @@ window.addEventListener('load',()=>{
 /* ── AMBIENT AUDIO ── */
 const sounds=['asset/sounds/rain-sounds.opus','asset/sounds/moonlight.opus'];
 let audio=null,isPlaying=false,fadeTimer=null;
+
+function fadeTo(targetVol){
+  if(!audio)return;
+  if(fadeTimer)clearInterval(fadeTimer);
+  fadeTimer=setInterval(()=>{
+    if(!audio){clearInterval(fadeTimer);fadeTimer=null;return;}
+    const d=targetVol-audio.volume;
+    if(Math.abs(d)<0.015){
+      audio.volume=targetVol;
+      clearInterval(fadeTimer);fadeTimer=null;
+      if(targetVol===0){audio.pause();audio.currentTime=0;}
+    }else{
+      audio.volume=Math.max(0,Math.min(1,audio.volume+Math.sign(d)*0.025));
+    }
+  },40);
+}
+
+function updateAudioUI(){
+  document.querySelector('#music-btn svg').style.opacity=isPlaying?'1':'0.35';
+  document.getElementById('rain-tooltip').textContent=isPlaying?'Pause rain':'Play rain';
+}
+
 document.getElementById('music-btn').addEventListener('click',()=>{
   if(!isPlaying){
     const src=sounds[Math.floor(Math.random()*sounds.length)];
@@ -202,23 +475,14 @@ document.getElementById('music-btn').addEventListener('click',()=>{
     audio=new Audio(src);
     audio.loop=true;
     audio.volume=0;
-    audio.play();
+    audio.play().catch(()=>{});
+    isPlaying=true;
+    fadeTo(0.6);
+  } else {
+    isPlaying=false;
+    fadeTo(0);
   }
-  isPlaying=!isPlaying;
-  const target=isPlaying?0.6:0;
-  if(fadeTimer)clearInterval(fadeTimer);
-  fadeTimer=setInterval(()=>{
-    const d=target-audio.volume;
-    if(Math.abs(d)<0.015){
-      audio.volume=target;
-      clearInterval(fadeTimer);fadeTimer=null;
-      if(!isPlaying){audio.pause();audio.currentTime=0;}
-    }else{
-      audio.volume+=Math.sign(d)*0.025;
-    }
-  },40);
-  document.querySelector('#music-btn svg').style.opacity=isPlaying?'1':'0.35';
-  document.getElementById('rain-tooltip').textContent=isPlaying?'Pause rain':'Play rain';
+  updateAudioUI();
 });
 </script>
 </body>

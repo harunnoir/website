@@ -403,13 +403,13 @@
   .nav-link.active { color: var(--gold); cursor: default; pointer-events: none; }
   .nav-link.active:hover { color: var(--gold); text-shadow: none; }
 
+  .nav-link {
+    position: relative;
+  }
   .nav-link.active::after {
     content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%);
     width: 4px; height: 4px; border-radius: 50%; background: var(--gold);
     box-shadow: 0 0 8px var(--glow-hot);
-  }
-  .nav-link {
-    position: relative;
   }
   .nav-sep { width: 1px; height: 14px; background: rgba(111,59,28,0.3); flex-shrink: 0; }
 
@@ -497,4 +497,31 @@
     .voice-card { padding: 12px 14px; gap: 12px; }
     .voice-card-name { font-size: 0.74rem; }
     .voice-card-desc { font-size: 0.78rem; }
+  }
+  /* ── ACCESSIBILITY: REDUCED MOTION ── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    #bg-img { animation: none; }
+    .profile-frame { animation: none; }
+    .profile-glow { animation: none; }
+    .profile-ring { animation: none; }
+    .profile-ring2 { animation: none; }
+    .profile-ring3 { animation: none; }
+    #center-glow { animation: none; }
+    #grain { animation: none; }
+    #light-streak { animation: none; opacity: 0.5; }
+  }
+
+  /* ── BOTTOM PADDING: prevent content hiding behind fixed nav ── */
+  #main {
+    padding-bottom: 100px;
+  }
+  @media (max-width: 480px) {
+    #main {
+      padding-bottom: 90px;
+    }
   }
