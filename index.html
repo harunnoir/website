@@ -3,15 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="HARUN Noir — Digital Sanctuary. Voice actor, 42 School graduate, and creative technologist.">
+<meta name="theme-color" content="#0a0401">
+<meta name="color-scheme" content="dark">
 <title>HARUN Noir — Digital Sanctuary</title>
 <link rel="icon" type="image/png" href="asset/logo.png">
 <meta property="og:title" content="HARUN Noir — Digital Sanctuary">
 <meta property="og:description" content="Where silence becomes form, and form becomes eternal.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="profile.jpg">
+<meta property="og:url" content="https://harunnoir.com">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,500&family=Inter:wght@300;400&family=JetBrains+Mono:wght@400;500&display=swap">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,500&family=Inter:wght@300;400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="style.css">
@@ -19,11 +24,16 @@
   /* Page transition overlay */
   #page-transition {
     position: fixed; inset: 0; z-index: 9990;
-    background: var(--void);
+    background: linear-gradient(135deg, var(--void) 0%, var(--abyss) 100%);
     opacity: 0; pointer-events: none;
-    transition: opacity 0.35s ease;
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(0);
   }
-  #page-transition.active { opacity: 1; pointer-events: all; }
+  #page-transition.active {
+    opacity: 1;
+    pointer-events: all;
+    backdrop-filter: blur(2px);
+  }
 
   /* Content sections */
   .page-section { display: none; width: 100%; }
@@ -31,6 +41,8 @@
 </style>
 </head>
 <body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
 
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
@@ -64,7 +76,7 @@
     <div class="profile-ring"></div>
     <div class="profile-ring-mask"></div>
     <div class="profile-img-wrap">
-      <img src="profile.jpg" alt="@harunnoir">
+      <img src="profile.jpg" alt="Profile photo of HARUN Noir" width="152" height="152" loading="eager" decoding="async">
     </div>
   </div>
 
@@ -79,12 +91,12 @@
   <div class="page-section active" id="section-sanctuary">
     <div class="links-wrap" id="links">
 
-      <a class="link-btn" href="https://youtube.com/@harunnoir" target="_blank" rel="noopener">
+      <a class="link-btn" href="https://youtube.com/@harunnoir" target="_blank" rel="noopener" aria-label="Visit YouTube channel (opens in new window)">
         <div class="btn-icon-wrap">
-          <svg class="btn-icon" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
         </div>
         <span class="btn-label">YouTube</span>
-        <span class="btn-arrow">→</span>
+        <span class="btn-arrow" aria-hidden="true">→</span>
       </a>
 
       <a class="link-btn" href="https://github.com/harunnoir" target="_blank" rel="noopener">
@@ -148,26 +160,27 @@
 
   <!-- ══ 42 content ══ -->
   <div class="page-section" id="section-42">
-    <div class="skills-wrap" id="skills-42">
-      <span class="skill-tag">C</span>
-      <span class="skill-tag">Python</span>
-      <span class="skill-tag">Shell</span>
-      <span class="skill-tag">Unix</span>
-      <span class="skill-tag">System Admin</span>
-      <span class="skill-tag">Algorithms</span>
-      <span class="skill-tag">Git</span>
+    <h2 class="section-header">Core Skills</h2>
+    <div class="skills-wrap" id="skills-42" role="list" aria-label="42 School skills">
+      <button class="skill-tag" role="listitem" aria-label="C programming">C</button>
+      <button class="skill-tag" role="listitem" aria-label="Python programming">Python</button>
+      <button class="skill-tag" role="listitem" aria-label="Shell scripting">Shell</button>
+      <button class="skill-tag" role="listitem" aria-label="Unix systems">Unix</button>
+      <button class="skill-tag" role="listitem" aria-label="System administration">System Admin</button>
+      <button class="skill-tag" role="listitem" aria-label="Algorithms and data structures">Algorithms</button>
+      <button class="skill-tag" role="listitem" aria-label="Git version control">Git</button>
     </div>
   </div>
 
   <!-- ══ VOICE content ══ -->
   <div class="page-section" id="section-voice">
-    <div class="skills-wrap" id="skills-voice">
-      <span class="skill-tag">Narration</span>
-      <span class="skill-tag">Character Acting</span>
-      <span class="skill-tag">Commercial</span>
-      <span class="skill-tag">Audio Editing</span>
-      <span class="skill-tag">Script Writing</span>
-      <span class="skill-tag">Dubbing</span>
+    <div class="skills-wrap" id="skills-voice" role="list" aria-label="Voice acting skills">
+      <button class="skill-tag" role="listitem" aria-label="Narration work">Narration</button>
+      <button class="skill-tag" role="listitem" aria-label="Character acting">Character Acting</button>
+      <button class="skill-tag" role="listitem" aria-label="Commercial voice work">Commercial</button>
+      <button class="skill-tag" role="listitem" aria-label="Audio editing">Audio Editing</button>
+      <button class="skill-tag" role="listitem" aria-label="Script writing">Script Writing</button>
+      <button class="skill-tag" role="listitem" aria-label="Dubbing and localization">Dubbing</button>
     </div>
 
     <div class="voice-section">
@@ -276,16 +289,30 @@
   <footer id="page-footer">MMXXVI &nbsp;·&nbsp; HARUN Noir &nbsp;·&nbsp; All Rights Reserved</footer>
 </div>
 
-<nav id="page-nav">
-  <span class="nav-link active" data-page="sanctuary">Sanctuary</span>
-  <span class="nav-sep"></span>
-  <span class="nav-link" data-page="42">42</span>
-  <span class="nav-sep"></span>
-  <span class="nav-link" data-page="voice">Voice</span>
+<nav id="page-nav" aria-label="Main navigation">
+  <button class="nav-link active" data-page="sanctuary" aria-current="page">Sanctuary</button>
+  <span class="nav-sep" aria-hidden="true"></span>
+  <button class="nav-link" data-page="42" aria-label="42 School section">42</button>
+  <span class="nav-sep" aria-hidden="true"></span>
+  <button class="nav-link" data-page="voice" aria-label="Voice Acting section">Voice</button>
 </nav>
 
+<button id="theme-btn" title="Toggle Theme" aria-label="Toggle between light and dark theme" class="theme-btn">
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="5"/>
+    <line x1="12" y1="1" x2="12" y2="3"/>
+    <line x1="12" y1="21" x2="12" y2="23"/>
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+    <line x1="1" y1="12" x2="3" y2="12"/>
+    <line x1="21" y1="12" x2="23" y2="12"/>
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+  </svg>
+</button>
+
 <button id="music-btn" title="Toggle Rain Sound" aria-label="Toggle rain sounds">
-  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#b07a47" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#b07a47" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     <path d="M20 16.2A4.5 4.5 0 0 0 17.5 8h-1.8A7 7 0 0 0 4 14.9"/>
     <line x1="8" y1="19" x2="8" y2="21"/>
     <line x1="12" y1="17" x2="12" y2="19"/>
@@ -309,15 +336,23 @@ document.addEventListener('mousemove',e=>{
   requestAnimationFrame(loop);
 })();
 function updateCursorListeners(){
-  document.querySelectorAll('a,button,[data-page]').forEach(el=>{
+  document.querySelectorAll('a,button,[data-page],.nav-link,.skill-tag').forEach(el=>{
     el.removeEventListener('mouseenter',onEnter);
     el.removeEventListener('mouseleave',onLeave);
     el.addEventListener('mouseenter',onEnter);
     el.addEventListener('mouseleave',onLeave);
   });
 }
-function onEnter(){ring.style.width='54px';ring.style.height='54px';ring.style.borderColor='rgba(214,165,108,0.7)';}
-function onLeave(){ring.style.width='34px';ring.style.height='34px';ring.style.borderColor='rgba(176,122,71,0.45)';}
+function onEnter(){
+  ring.style.width='54px';
+  ring.style.height='54px';
+  ring.style.borderColor='rgba(214,165,108,0.7)';
+}
+function onLeave(){
+  ring.style.width='34px';
+  ring.style.height='34px';
+  ring.style.borderColor='rgba(176,122,71,0.45)';
+}
 
 const mb=document.getElementById('music-btn'),rt=document.getElementById('rain-tooltip');
 mb.addEventListener('mouseenter',()=>rt.classList.add('show'));
@@ -423,9 +458,27 @@ function switchPage(pageKey) {
   }, 350);
 }
 
-/* Nav click handlers */
+/* Nav click/keyboard handlers */
 document.querySelectorAll('.nav-link[data-page]').forEach(link=>{
   link.addEventListener('click',()=>switchPage(link.dataset.page));
+  link.addEventListener('keydown',(e)=>{
+    if(e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      switchPage(link.dataset.page);
+    }
+  });
+});
+
+/* Keyboard navigation - arrow keys */
+document.addEventListener('keydown',(e)=>{
+  if(e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+    const pages=['sanctuary','42','voice'];
+    const currentIdx=pages.indexOf(currentPage);
+    const nextIdx=e.key==='ArrowLeft'?
+      (currentIdx-1+pages.length)%pages.length:
+      (currentIdx+1)%pages.length;
+    switchPage(pages[nextIdx]);
+  }
 });
 
 /* ── LOADER ── */
@@ -442,6 +495,33 @@ window.addEventListener('load',()=>{
     setTimeout(()=>rh.classList.remove('show'),4200);
   },1800);
 });
+
+/* ── THEME TOGGLE ── */
+const themeBtn=document.getElementById('theme-btn');
+const htmlEl=document.documentElement;
+let isDarkMode=localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':true;
+
+function applyTheme(isDark){
+  isDarkMode=isDark;
+  if(isDark){
+    htmlEl.style.filter='';
+    localStorage.setItem('theme','dark');
+  }else{
+    htmlEl.style.filter='invert(0.92) hue-rotate(180deg)';
+    localStorage.setItem('theme','light');
+  }
+  updateThemeIcon();
+}
+
+function updateThemeIcon(){
+  const path=themeBtn.querySelector('svg path:first-of-type');
+  if(path){
+    themeBtn.style.color=isDarkMode?'var(--text-secondary)':'var(--text-secondary)';
+  }
+}
+
+themeBtn.addEventListener('click',()=>applyTheme(!isDarkMode));
+applyTheme(isDarkMode);
 
 /* ── AMBIENT AUDIO ── */
 const sounds=['asset/sounds/rain-sounds.opus','asset/sounds/moonlight.opus'];
