@@ -518,7 +518,6 @@ let isDarkMode=localStorage.getItem('theme')?localStorage.getItem('theme')==='da
 function applyTheme(isDark){
   isDarkMode=isDark;
   if(isDark){
-    htmlEl.style.filter='';
     htmlEl.classList.remove('light-mode');
     localStorage.setItem('theme','dark');
   }else{
@@ -536,6 +535,7 @@ function updateThemeIcon(){
 }
 
 themeBtn.addEventListener('click',()=>applyTheme(!isDarkMode));
+// Apply theme on load - dark mode is default
 applyTheme(isDarkMode);
 
 /* ── LIGHTS OFF ── */

@@ -867,7 +867,10 @@
     background: #f5f1eb;
     color: #2c2419;
   }
-  html.light-mode #bg-img,
+  html.light-mode #bg-img {
+    filter: brightness(1.8) contrast(0.85) saturate(0.5) invert(1);
+    opacity: 0.4;
+  }
   html.light-mode #overlay-grad,
   html.light-mode #overlay-sepia,
   html.light-mode #vignette,
@@ -876,7 +879,14 @@
     display: none;
   }
   html.light-mode #grain {
-    opacity: 0.03;
+    opacity: 0.02;
+  }
+  html.light-mode #cursor,
+  html.light-mode #cursor-ring {
+    border-color: #8b6f47;
+  }
+  html.light-mode #cursor-ring {
+    box-shadow: inset 0 0 8px rgba(139, 111, 71, 0.15);
   }
   html.light-mode .profile-frame {
     filter: drop-shadow(0 8px 24px rgba(0,0,0,0.08));
