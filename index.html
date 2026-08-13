@@ -19,7 +19,7 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&display=swap">
 <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=20260813-4">
 <style>
   /* Page transition overlay */
   #page-transition {
@@ -74,6 +74,8 @@
   </nav>
   <button id="music-btn" title="Play ambient sound" aria-label="Play ambient sound" aria-pressed="false">Ambience</button>
 </header>
+<button id="nav-reveal" aria-label="Show navigation" aria-controls="page-nav" aria-expanded="true"><span></span></button>
+<p id="nav-note">Navigation rests at the right edge</p>
 
 <!-- Main -->
 <main id="main" tabindex="-1">
@@ -473,6 +475,43 @@ document.querySelectorAll('.nav-link[data-page]').forEach(link=>{
   });
 });
 
+/* ── CONTEXTUAL NAVIGATION ── */
+const navRail=document.querySelector('.site-header');
+const navReveal=document.getElementById('nav-reveal');
+const navNote=document.getElementById('nav-note');
+let navHideTimer=null;
+
+function hideNavigation(){
+  if(navRail.matches(':hover')||navRail.contains(document.activeElement)) return;
+  navRail.classList.add('is-hidden');
+  navReveal.classList.add('is-visible');
+  navReveal.setAttribute('aria-expanded','false');
+}
+
+function showNavigation(autoHide=true){
+  clearTimeout(navHideTimer);
+  navRail.classList.remove('is-hidden');
+  navReveal.classList.remove('is-visible');
+  navReveal.setAttribute('aria-expanded','true');
+  if(autoHide) navHideTimer=setTimeout(hideNavigation,3200);
+}
+
+navRail.addEventListener('mouseenter',()=>showNavigation(false));
+navRail.addEventListener('mouseleave',()=>showNavigation(true));
+navRail.addEventListener('focusin',()=>showNavigation(false));
+navRail.addEventListener('focusout',()=>showNavigation(true));
+navReveal.addEventListener('click',()=>showNavigation(true));
+document.addEventListener('mousemove',event=>{
+  if(window.innerWidth-event.clientX<90) showNavigation(true);
+});
+document.addEventListener('keydown',event=>{
+  if(event.key==='Tab') showNavigation(true);
+});
+
+setTimeout(()=>navNote.classList.add('show'),1100);
+setTimeout(()=>navNote.classList.remove('show'),5600);
+showNavigation(true);
+
 window.addEventListener('popstate',()=>switchPage(pageFromHash(),{updateHistory:false,instant:true}));
 window.addEventListener('hashchange',()=>switchPage(pageFromHash(),{updateHistory:false,instant:true}));
 
@@ -481,7 +520,6 @@ switchPage(pageFromHash(),{updateHistory:false,instant:true});
 
 /* ── LOADER ── */
 window.addEventListener('load',()=>{
-  attemptAutoplay();
   setTimeout(()=>{
     document.getElementById('loader').classList.add('hide');
     const main=document.getElementById('main');
@@ -512,7 +550,7 @@ function fadeTo(targetVol){
     if(Math.abs(d)<0.015){
       audio.volume=targetVol;
       clearInterval(fadeTimer);fadeTimer=null;
-      if(targetVol===0){audio.pause();audio.currentTime=0;}
+      if(targetVol===0) audio.pause();
     }else{
       audio.volume=Math.max(0,Math.min(1,audio.volume+Math.sign(d)*0.025));
     }
@@ -527,6 +565,7 @@ function updateAudioUI(){
   const audioLabel=isPlaying?`Pause ${soundName}`:`Play ${soundName}`;
   mb.setAttribute('aria-label',audioLabel);
   mb.title=audioLabel;
+  if('mediaSession' in navigator) navigator.mediaSession.playbackState=isPlaying?'playing':'paused';
 }
 
 function createFallbackAudio(){
@@ -561,6 +600,22 @@ function initAudio(){
   audio.loop=true;
   audio.preload='auto';
   audio.volume=currentVolume;
+  if('mediaSession' in navigator && 'MediaMetadata' in window){
+    navigator.mediaSession.metadata=new MediaMetadata({
+      title:currentSound.name.charAt(0).toUpperCase()+currentSound.name.slice(1),
+      artist:'HARUN Noir',
+      album:'Digital Sanctuary',
+      artwork:[{src:'asset/logo.png',sizes:'64x64',type:'image/png'}]
+    });
+    try{
+      navigator.mediaSession.setActionHandler('play',()=>startAmbient());
+      navigator.mediaSession.setActionHandler('pause',()=>{
+        isPlaying=false;
+        fadeTo(0);
+        updateAudioUI();
+      });
+    }catch(error){ /* Some browsers expose only part of the Media Session API. */ }
+  }
   return audio;
 }
 
@@ -579,30 +634,6 @@ async function startAmbient(){
       return true;
     }
     return false;
-  }
-}
-
-function armFirstInteraction(){
-  const begin=(event)=>{
-    if(event.target.closest?.('#music-btn')) return;
-    startAmbient().then(started=>{
-      if(started){
-        document.getElementById('rain-hint').classList.add('hide');
-        document.removeEventListener('pointerdown',begin);
-        document.removeEventListener('keydown',begin);
-      }
-    });
-  };
-  document.addEventListener('pointerdown',begin,{passive:true});
-  document.addEventListener('keydown',begin);
-}
-
-async function attemptAutoplay(){
-  if(!await startAmbient()){
-    const hint=document.getElementById('rain-hint');
-    hint.textContent='tap anywhere for sound';
-    hint.classList.add('show');
-    armFirstInteraction();
   }
 }
 
